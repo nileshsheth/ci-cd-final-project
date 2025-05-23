@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cleanup
+spec:
+  description: |-
+    A simple task to clean up the workspace directory.
+  steps:
+    - name: cleanup-workspace
+      image: alpine:3.14
+      script: |
+        #!/bin/sh
+        echo "Cleaning up workspace..."
+        rm -rf /workspace/*
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: nose-tests
+spec:
+  description: |-
+    Task that runs Python tests using nose after cloning a GitHub repository.
+  params:
+    - name: repo-url
+      type: string
+      description: URL of the GitHub repo to test
+  steps:
+    - name: run-tests
+      image: python:3.9
+      script: |
+        #!/bin/sh
+        echo "Cloning repository..."
+        git clone $(params.repo-url) src
+        cd src
+        echo "Installing dependencies..."
+        pip install -r requirements.txt || true
+        pip install nose
+        echo "Running nose tests..."
+        nosetests
