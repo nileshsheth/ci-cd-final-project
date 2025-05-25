@@ -1,3 +1,6 @@
+# -------------------------------
+# Task: Cleanup
+# -------------------------------
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -12,7 +15,11 @@ spec:
         #!/bin/sh
         echo "Cleaning up workspace..."
         rm -rf /workspace/*
+
 ---
+# -------------------------------
+# Task: Run Nose Tests
+# -------------------------------
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
