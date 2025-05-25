@@ -14,17 +14,13 @@ spec:
       image: python:3.9
       script: |
         #!/bin/sh
-        echo "Installing git..."
         apt-get update && apt-get install -y git
-        echo "Cloning repository..."
         git clone $(params.repo-url) /workspace/src
         cd /workspace/src
-        echo "Installing dependencies..."
         pip install -r requirements.txt || true
-        pip install nose
-        echo "Running nose tests..."
-        nosetests
-
+        pip install nose2
+        echo "Running nose2 tests..."
+        nose2
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Task
